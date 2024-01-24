@@ -7,16 +7,19 @@ import {
   Button,
   Stack,
   Container,
+  TextField,
+  Link,
 } from "@mui/material";
-import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import { SERVER_ADDRESS } from "../utilities/constants";
 import axios from "axios";
 import { useAuth } from "../utilities/auth";
+import AuthHeader from "../components/AuthHeader";
+import AuthBottom from "../components/AuthBottom";
 
-function RegistrationPage({ setResponseData }) {
-  const [userEmail, setUserEmail] = useState();
-  const navigate = useNavigate();
+function RegistrationPage({ setStep, prevStep }) {
+  const [userEmail, setUserEmail] = useState("");
+  const [userEmailErr, setUserEmailErr] = useState(null);
   const auth = useAuth();
 
   const handleEmailInput = (e) => {
@@ -34,46 +37,43 @@ function RegistrationPage({ setResponseData }) {
       .post(`${SERVER_ADDRESS}/api/register/email`, user)
       .then((response) => {
         console.log("Response:", response);
-        setResponseData(response.data);
+        setStep(response.data.next_step);
         auth.login(response.data.user_id);
       })
       .catch((error) => {
         console.error("Error:", error);
+        setUserEmailErr(error.response.data.error);
+        if (error.response.data.error.email) {
+          setUserEmailErr(error.response.data.error.email);
+        }
       });
   };
 
   return (
     <Container maxWidth="sm">
-      <Box sx={{ pb: 6 }}>
-        <Typography variant="h2" component="h1">
-          Реєстрація
-        </Typography>
-        <Typography variant="body2">Даруйте подарунки з любов’ю</Typography>
-      </Box>
+      <AuthHeader header="Реєстрація" subheader="Даруйте подарунки з любов’ю" />
       <form onSubmit={handleSubmit}>
         <Stack spacing={4}>
-          <FormControl>
-            <InputLabel htmlFor="email">Введіть Email</InputLabel>
-            <OutlinedInput
-              autoFocus
-              id="email"
-              variant="outlined"
-              label="Введіть Email"
-              type="email"
-              onChange={handleEmailInput}
-            />
-          </FormControl>
+          <TextField
+            autoFocus
+            id="email"
+            variant="outlined"
+            label="Введіть Email"
+            type="text"
+            value={userEmail}
+            onChange={handleEmailInput}
+            error={Boolean(userEmailErr)}
+            helperText={userEmailErr}
+          />
           <Button variant="contained" type="submit">
             Зареєструватися через Email
           </Button>
-          <Button variant="contained" color="secondary">
+          {/* <Button variant="contained" color="secondary">
             Зареєструватися через Google
-          </Button>
+          </Button> */}
         </Stack>
       </form>
-      <Typography variant="body2">
-        Вже маєте акаунт?<Link to="/login">Увійти</Link>
-      </Typography>
+      <AuthBottom text="Вже маєте акаунт?" linkText="Увійти" to="/login" />
     </Container>
   );
 }
