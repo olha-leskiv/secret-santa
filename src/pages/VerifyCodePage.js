@@ -9,7 +9,7 @@ import {
   Container,
   FormHelperText,
 } from "@mui/material";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, Navigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { SERVER_ADDRESS } from "../utilities/constants";
 import axios from "axios";
@@ -19,6 +19,7 @@ import AuthBottom from "../components/AuthBottom";
 
 function VerifyCodePage({ setStep, prevStep }) {
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const auth = useAuth();
   const input1Ref = useRef(null);
@@ -89,7 +90,7 @@ function VerifyCodePage({ setStep, prevStep }) {
     setFocusedInput("input" + (Number(name.substr(5, 1)) + 1));
   };
   const handleBack = () => {
-    setStep(prevStep);
+    navigate(-1);
   };
 
   const handleSubmit = async (e) => {
@@ -109,7 +110,7 @@ function VerifyCodePage({ setStep, prevStep }) {
       .post(`${SERVER_ADDRESS}/api/register/email-verification-code`, user)
       .then((response) => {
         console.log("Response:", response);
-        auth.setCreatePasswordToken(response.data.create_password_token);
+        auth.setCreatePasswordToken(response.data.set_password_token);
         setStep(response.data.next_step);
       })
       .catch((error) => {

@@ -1,5 +1,5 @@
 import { Typography, Link, Stack } from "@mui/material";
-import { useNavigate, Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 function AuthBottom({ text, linkText, to }) {
   return (
@@ -15,9 +15,7 @@ function AuthBottom({ text, linkText, to }) {
     >
       <Typography variant="body2">{text}</Typography>
       <Typography variant="body2" sx={{ opacity: 1 }}>
-        <RouterLink to={to}>
-          <Link>{linkText}</Link>
-        </RouterLink>
+        <RouterLink to={to}>{linkText}</RouterLink>
       </Typography>
     </Stack>
   );

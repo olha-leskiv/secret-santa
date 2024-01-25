@@ -11,11 +11,13 @@ import {
   Link,
 } from "@mui/material";
 import { useState } from "react";
-import { SERVER_ADDRESS } from "../utilities/constants";
+import { SERVER_ADDRESS, CLIENT_ID } from "../utilities/constants";
 import axios from "axios";
 import { useAuth } from "../utilities/auth";
 import AuthHeader from "../components/AuthHeader";
 import AuthBottom from "../components/AuthBottom";
+
+// import { GoogleLogin } from "@leecheuk/react-google-login";
 
 function RegistrationPage({ setStep, prevStep }) {
   const [userEmail, setUserEmail] = useState("");
@@ -49,6 +51,13 @@ function RegistrationPage({ setStep, prevStep }) {
       });
   };
 
+  // const handleSuccess = (res) => {
+  //   console.log("logged in", res);
+  // };
+  // const handleFailure = (res) => {
+  //   console.log("failure", res);
+  // };
+
   return (
     <Container maxWidth="sm">
       <AuthHeader header="Реєстрація" subheader="Даруйте подарунки з любов’ю" />
@@ -68,12 +77,21 @@ function RegistrationPage({ setStep, prevStep }) {
           <Button variant="contained" type="submit">
             Зареєструватися через Email
           </Button>
+          {/* <GoogleLogin
+            clientId={CLIENT_ID}
+            buttonText="Зареєструватися через Google"
+            cookiePolicy={"single_host_origin"}
+            isSignedIn={true}
+            onSuccess={handleSuccess}
+            onFailure={handleSuccess}
+          /> */}
+
           {/* <Button variant="contained" color="secondary">
             Зареєструватися через Google
           </Button> */}
         </Stack>
       </form>
-      <AuthBottom text="Вже маєте акаунт?" linkText="Увійти" to="/login" />
+      <AuthBottom text="Вже маєте акаунт?" linkText="Увійти" to="../login" />
     </Container>
   );
 }

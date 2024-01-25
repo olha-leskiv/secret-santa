@@ -8,6 +8,8 @@ import {
   Stack,
   Container,
   TextField,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import { useNavigate, Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
@@ -15,6 +17,7 @@ import { SERVER_ADDRESS } from "../utilities/constants";
 import axios from "axios";
 import { useAuth } from "../utilities/auth";
 import AuthHeader from "../components/AuthHeader";
+import { EyeOff, Eye } from "react-feather";
 
 function CreatePasswordPage({ setStep, prevStep }) {
   const [createPassError, setCreatePassError] = useState(null);
@@ -26,6 +29,19 @@ function CreatePasswordPage({ setStep, prevStep }) {
   const auth = useAuth();
   const createPassRef = useRef(null);
   const confirmPassRef = useRef(null);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showCreatePassword, setShowCreatePassword] = useState(false);
+
+  const handleClickShowPassword = (e) => {
+    if (e.currentTarget.id === "create-icon") {
+      setShowCreatePassword((show) => !show);
+    } else if (e.currentTarget.id === "confirm-icon")
+      setShowConfirmPassword((show) => !show);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const areInputsEqual = () => {
     let result = false;
@@ -73,7 +89,7 @@ function CreatePasswordPage({ setStep, prevStep }) {
 
     const data = {
       user_id: auth.user,
-      create_password_token: auth.createPasswordToken,
+      set_password_token: auth.createPasswordToken,
       password: inputsValues.create,
     };
 
@@ -99,7 +115,7 @@ function CreatePasswordPage({ setStep, prevStep }) {
               id="create-password"
               variant="outlined"
               label="Створіть пароль (більше 8 символів)"
-              type="password"
+              type={showCreatePassword ? "text" : "password"}
               value={inputsValues.create}
               inputRef={createPassRef}
               onChange={(e) => {
@@ -107,18 +123,48 @@ function CreatePasswordPage({ setStep, prevStep }) {
               }}
               error={Boolean(createPassError)}
               helperText={createPassError}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      id="create-icon"
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showCreatePassword ? <EyeOff /> : <Eye />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
             <TextField
               id="confirm-password"
               variant="outlined"
               label="Підтвердіть пароль"
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               value={inputsValues.confirm}
               error={Boolean(confirmPassError)}
               inputRef={confirmPassRef}
               helperText={confirmPassError}
               onChange={(e) => {
                 setInputsValues({ ...inputsValues, confirm: e.target.value });
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      id="confirm-icon"
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showConfirmPassword ? <EyeOff /> : <Eye />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
               }}
             />
           </Stack>

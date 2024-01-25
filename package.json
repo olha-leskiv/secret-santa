@@ -5,13 +5,17 @@
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
+    "@leecheuk/react-google-login": "^5.4.1",
     "@mui/material": "^5.15.5",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.5",
+    "feather-icons": "^4.29.1",
     "react": "^18.2.0",
+    "react-auth-kit": "^3.0.2-alpha.19",
     "react-dom": "^18.2.0",
+    "react-feather": "^2.0.10",
     "react-router-dom": "^6.21.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"

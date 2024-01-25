@@ -15,37 +15,9 @@ import {
 } from "@mui/material";
 import CreatePasswordPage from "./CreatePaswordPage";
 import CreateUsernamePage from "./CreateUsernamePage";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, useLocation, Outlet } from "react-router-dom";
 
 function AuthentificationPage() {
-  const [step, setStep] = useState("REGISTER_EMAIL");
-  const [prevStep, setPrevStep] = useState("REGISTER_EMAIL");
-  let componentToRender;
-
-  switch (step) {
-    case "REGISTER_EMAIL":
-      componentToRender = (
-        <RegistrationPage setStep={setStep} prevStep={prevStep} />
-      );
-      break;
-    case "VERIFY_EMAIL":
-      componentToRender = (
-        <VerifyCodePage setStep={setStep} prevStep={prevStep} />
-      );
-      break;
-    case "CREATE_PASSWORD":
-      componentToRender = (
-        <CreatePasswordPage setStep={setStep} prevStep={prevStep} />
-      );
-      break;
-    case "CREATE_USERNAME":
-      componentToRender = (
-        <CreateUsernamePage setStep={setStep} prevStep={prevStep} />
-      );
-      break;
-    default:
-      componentToRender = <div>Unknown step</div>;
-  }
   return (
     <Box
       sx={{
@@ -73,7 +45,8 @@ function AuthentificationPage() {
         }}
       >
         <Logo />
-        {componentToRender}
+        {/* {componentToRender} */}
+        <Outlet />
         <Box />
       </Box>
     </Box>
