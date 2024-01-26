@@ -1,15 +1,4 @@
-import {
-  Box,
-  Typography,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  Button,
-  Stack,
-  Container,
-  TextField,
-  Link,
-} from "@mui/material";
+import { Button, Stack, Container, TextField } from "@mui/material";
 import { useState } from "react";
 import { SERVER_ADDRESS, CLIENT_ID } from "../utilities/constants";
 import axios from "axios";
@@ -31,16 +20,16 @@ function RegistrationPage({ setStep, prevStep }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const user = {
+    const data = {
       email: userEmail,
     };
 
     await axios
-      .post(`${SERVER_ADDRESS}/api/register/email`, user)
+      .post(`${SERVER_ADDRESS}/api/register/email`, data)
       .then((response) => {
         console.log("Response:", response);
         setStep(response.data.next_step);
-        auth.login(response.data.user_id);
+        auth.login({ ...auth.user, id: response.data.user_id });
       })
       .catch((error) => {
         console.error("Error:", error);

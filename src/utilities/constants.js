@@ -99,7 +99,3 @@ export const THEME = createTheme({
     },
   },
 });
-
-export const CLIENT_ID =
-  "351290299920-kjqc5gr5lps0ik526pkifih141sp91re.apps.googleusercontent.com";
-export const CLIENT_SECRET = "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";

@@ -13,7 +13,6 @@
     "axios": "^1.6.5",
     "feather-icons": "^4.29.1",
     "react": "^18.2.0",
-    "react-auth-kit": "^3.0.2-alpha.19",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
     "react-router-dom": "^6.21.1",

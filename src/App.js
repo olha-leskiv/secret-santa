@@ -7,7 +7,6 @@ import AuthentificationPage from "./pages/AuthentificationPage";
 import { CssBaseline } from "@mui/material";
 import { THEME } from "./utilities/constants";
 import { ThemeProvider } from "@mui/material/styles";
-import Authetification from "./pages/Authetification";
 import Home from "./pages/Home";
 import RegistrationPage from "./pages/RegistrationPage";
 import VerifyCodePage from "./pages/VerifyCodePage";
@@ -16,7 +15,7 @@ import CreateUsernamePage from "./pages/CreateUsernamePage";
 import { useEffect, useState } from "react";
 
 function App() {
-  const [step, setStep] = useState("REGISTER_EMAIL");
+  const [step, setStep] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +33,7 @@ function App() {
         navigate("auth/username");
         break;
       default:
-        navigate("auth/resgistration");
+        navigate("/");
     }
   }, [step]);
 
@@ -44,6 +43,14 @@ function App() {
       <AuthProvider>
         <div className="App">
           <Routes>
+            <Route
+              path="/"
+              element={
+                <RequireAuth>
+                  <Home />
+                </RequireAuth>
+              }
+            ></Route>
             <Route path="/auth" element={<AuthentificationPage />}>
               <Route
                 path="resgistration"

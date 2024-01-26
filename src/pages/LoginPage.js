@@ -1,10 +1,9 @@
 import { useState } from "react";
+import { SERVER_ADDRESS } from "../utilities/constants";
+import axios from "axios";
 import { useAuth } from "../utilities/auth";
 import {
   Box,
-  Typography,
-  FormControl,
-  InputLabel,
   TextField,
   Button,
   Stack,
@@ -14,7 +13,7 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthHeader from "../components/AuthHeader";
 import AuthBottom from "../components/AuthBottom";
 import { Eye, EyeOff } from "react-feather";
@@ -25,6 +24,29 @@ function LoginPage() {
     password: "",
     remember: true,
   });
+
+  const navigate = useNavigate();
+  const auth = useAuth();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const data = {
+      email: formData.email,
+      password: formData.password,
+    };
+
+    await axios
+      .post(`${SERVER_ADDRESS}/api/login`, data)
+      .then((response) => {
+        console.log("Response:", response);
+        auth.login({ ...auth.user, key: response.data.key });
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -63,7 +85,7 @@ function LoginPage() {
     <Container maxWidth="sm">
       <AuthHeader header="Вхід" subheader="Даруйте подарунки з любов’ю" />
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <Stack>
           <Stack spacing={5}>
             <Box>

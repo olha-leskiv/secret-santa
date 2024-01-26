@@ -1,18 +1,21 @@
 import { useState, createContext, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [createPasswordToken, setCreatePasswordToken] = useState(null);
-  const [createusernametoken, setcreateusernametoken] = useState(null);
+  const navigate = useNavigate();
 
   const login = (user) => {
     setUser(user);
+    localStorage.setItem("key", user.key);
   };
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem("key");
+    navigate("/");
   };
 
   return (
@@ -21,10 +24,6 @@ export const AuthProvider = ({ children }) => {
         user,
         login,
         logout,
-        setCreatePasswordToken,
-        createPasswordToken,
-        createusernametoken,
-        setcreateusernametoken,
       }}
     >
       {children}

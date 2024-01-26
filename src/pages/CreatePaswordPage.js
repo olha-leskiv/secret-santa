@@ -88,15 +88,18 @@ function CreatePasswordPage({ setStep, prevStep }) {
     if (!areInputsEqual()) return;
 
     const data = {
-      user_id: auth.user,
-      set_password_token: auth.createPasswordToken,
+      user_id: auth.user.id,
+      set_password_token: auth.user.passtoken,
       password: inputsValues.create,
     };
 
     await axios
       .post(`${SERVER_ADDRESS}/api/register/password`, data)
       .then((response) => {
-        auth.setcreateusernametoken(response.data.create_username_token);
+        auth.login({
+          ...auth.user,
+          usernametoken: response.data.create_username_token,
+        });
         setStep(response.data.next_step);
       })
       .catch((error) => {

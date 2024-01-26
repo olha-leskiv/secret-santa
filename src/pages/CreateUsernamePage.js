@@ -20,6 +20,7 @@ function CreateUsernamePage({ setStep, prevStep }) {
   const [username, setUsername] = useState("");
   const [usernameError, setUsernameError] = useState(null);
   const auth = useAuth();
+  const navigate = useNavigate("");
 
   const handleUsernameInput = (e) => {
     setUsername(e.target.value);
@@ -36,17 +37,18 @@ function CreateUsernamePage({ setStep, prevStep }) {
     e.preventDefault();
     if (!areInputsFilled) return;
 
-    const payload = {
-      user_id: auth.user,
-      create_username_token: auth.createusernametoken,
+    const data = {
+      user_id: auth.user.id,
+      create_username_token: auth.user.usernametoken,
       username: username,
     };
 
     await axios
-      .post(`${SERVER_ADDRESS}/api/register/username`, payload)
+      .post(`${SERVER_ADDRESS}/api/register/username`, data)
       .then((response) => {
         console.log("Response:", response);
-        setStep(response.data.next_step);
+        auth.log({ ...auth.user, key: response.data.key });
+        navigate("/");
       })
       .catch((error) => {
         console.error("Error:", error);

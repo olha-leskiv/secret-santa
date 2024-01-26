@@ -101,16 +101,19 @@ function VerifyCodePage({ setStep, prevStep }) {
       return setError("Введіть 6 цифр");
     }
 
-    let user = {
-      user_id: auth.user,
+    let data = {
+      user_id: auth.user.id,
       verification_code: `${input1}${input2}${input3}${input4}${input5}${input6}`,
     };
 
     await axios
-      .post(`${SERVER_ADDRESS}/api/register/email-verification-code`, user)
+      .post(`${SERVER_ADDRESS}/api/register/email-verification-code`, data)
       .then((response) => {
         console.log("Response:", response);
-        auth.setCreatePasswordToken(response.data.set_password_token);
+        auth.login({
+          ...auth.user,
+          passtoken: response.data.set_password_token,
+        });
         setStep(response.data.next_step);
       })
       .catch((error) => {
